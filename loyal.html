@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Loyal</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="description" content="Loyal wife"/>
+    <style>
+        *{
+  border:none;
+  margin:0px;
+  padding:0px;
+}
+
+#main{
+  width:100vw;
+  height:100vh;
+  background-color:black;
+  display:flex;
+}
+
+#carousel{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:75%;
+  flex-wrap:wrap;
+}
+
+#prev{
+  transform:translateX(-15px);
+}
+
+#next{
+  transform:translateX(15px);
+}
+
+#prev,#next{
+  height:30px;
+  width:30px;
+  border-radius:50%;
+  background-color:darkgrey;
+  transition:all 0.25s ease-out;
+}
+
+#prev:focus,#next:focus{
+  background-color:lightgrey;
+}
+
+#dots{
+  height:30px;
+  display:flex;
+  align-items:center;
+  position:absolute;
+  margin-top:125%;
+}
+
+.dot{
+  margin:4px;
+}
+
+#img{width:75%;min-width:200px;}
+    </style>
+  </head>
+  <body>
+    <div id="main">
+  <div id="carousel">
+    <button id="prev">&#10094;</button>
+    <img id="img"/>
+    <button id="next">&#10095;</button>
+    <div id="dots"></div>
+  </div>
+    </div>
+  </body>
+  <script>
+      const prev = document.getElementById('prev')
+const next = document.getElementById('next')
+const img = document.getElementById('img')
+img.crossOrigin = 'anonymous'
+
+const imgs = ['img1.jpg','img2.jpg','img3.jpg','img4.png']
+let num = 0
+const Xthreshold = 120
+const Yrestraint = 100
+const maxTime = 300
+let startTime = null
+let elapsedTime = null
+let startX = null
+let startY = null
+let distX = null
+let distY = null
+
+for(let i=0;i<imgs.length;i++){
+  const span = document.createElement('span')
+  span.setAttribute('class','dot ' + i)
+  span.style.height = '10px'
+  span.style.width = '10px'
+  span.style.backgroundColor = 'darkgrey'
+  span.style.borderRadius = '50%'
+  document.getElementById('dots').appendChild(span)
+}
+
+const dots = document.getElementsByClassName('dot')
+
+img.src = imgs[num]
+dots[num].style.backgroundColor = 'lightgrey'
+
+function prevImg(){
+  const previous = num
+  if(num == 0)
+    num = imgs.length-1
+  else
+    num--
+  img.src = imgs[num]
+  dots[num].style.backgroundColor = 'lightgrey'
+  dots[previous].style.backgroundColor = 'darkgrey'
+}
+
+
+function nextImg(){
+  const current = num
+  if(num == imgs.length-1)
+    num = 0
+  else
+    num++
+  img.src = imgs[num]
+  dots[num].style.backgroundColor = 'lightgrey'
+  dots[current].style.backgroundColor = 'darkgrey'
+}
+
+prev.addEventListener('click',(e)=>{
+  prevImg()
+  e.preventDefault()
+})
+
+next.addEventListener('click',(e)=>{
+  nextImg()
+  e.preventDefault()
+})
+
+img.addEventListener('touchstart',(e)=>{
+  startX = e.changedTouches[0].pageX
+  startY = e.changedTouches[0].pageY
+  startTime = new Date().getTime()
+  e.preventDefault()
+},false)
+
+img.addEventListener('touchend',(e)=>{
+  distX = e.changedTouches[0].pageX - startX
+  distY = e.changedTouches[0].pageY - startY
+  elapsedTime = (new Date()).getTime() - startTime
+  
+  if(elapsedTime <= maxTime){
+    if(Math.abs(distX) >= Xthreshold && Math.abs(distY) <= Yrestraint){
+      if(distX < 0)
+        nextImg()
+      else
+        prevImg()
+    }
+  }
+  e.preventDefault()
+},false)
+  </script>
+</html>
