@@ -1,0 +1,54 @@
+*{
+  border:none;
+  margin:0px;
+  padding:0px;
+}
+
+#main{
+  width:100vw;
+  height:100vh;
+  background-color:black;
+  display:flex;
+}
+
+#carousel{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:75%;
+  flex-wrap:wrap;
+}
+
+#prev{
+  transform:translateX(-15px);
+}
+
+#next{
+  transform:translateX(15px);
+}
+
+#prev,#next{
+  height:30px;
+  width:30px;
+  border-radius:50%;
+  background-color:darkgrey;
+  transition:all 0.25s ease-out;
+}
+
+#prev:focus,#next:focus{
+  background-color:lightgrey;
+}
+
+#dots{
+  height:30px;
+  display:flex;
+  align-items:center;
+  position:absolute;
+  margin-top:125%;
+}
+
+.dot{
+  margin:4px;
+}
+
+#img{width:75%;min-width:200px;}
